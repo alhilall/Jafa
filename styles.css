@@ -1,0 +1,241 @@
+/* الأنماط الأساسية */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1a2b3c;
+    direction: rtl;
+}
+
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* لوحة النتائج */
+.score-board {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.team-score {
+    text-align: center;
+    color: white;
+}
+
+.team-score h3 {
+    margin-bottom: 10px;
+}
+
+.score {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* طاولة اللعب */
+.game-table {
+    flex: 1;
+    background-color: #2a5e3a;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+/* مناطق اللاعبين */
+.player-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.player-name {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.player-cards {
+    display: flex;
+    gap: 10px;
+    min-height: 120px;
+}
+
+/* المناطق الجانبية */
+.side-areas {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    margin: 20px 0;
+}
+
+.left, .right {
+    width: 120px;
+}
+
+/* منطقة اللعب المركزية */
+.play-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.played-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.game-status {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* البطاقات */
+.card {
+    width: 70px;
+    height: 100px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* نافذة الإعلان */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.declaration-type {
+    margin-bottom: 20px;
+}
+
+.declaration-type h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.suit-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.suit-btn {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.suit-btn:hover {
+    transform: scale(1.1);
+}
+
+.hearts, .diamonds {
+    color: red;
+}
+
+.clubs, .spades {
+    color: black;
+}
+
+/* الاستجابة للشاشات المختلفة */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+    }
+    
+    .player-cards {
+        min-height: 100px;
+    }
+    
+    .card {
+        width: 60px;
+        height: 85px;
+        font-size: 20px;
+    }
+    
+    .left, .right {
+        width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .score-board {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .player-cards {
+        min-height: 80px;
+    }
+    
+    .card {
+        width: 50px;
+        height: 70px;
+        font-size: 16px;
+    }
+    
+    .left, .right {
+        width: 80px;
+    }
+    
+    .suit-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}
