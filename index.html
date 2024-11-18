@@ -1,125 +1,85 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة بلوت</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a2b3c;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .score-board {
-            display: flex;
-            justify-content: space-between;
-            width: 90%;
-            margin-bottom: 10px;
-        }
-        .game-table {
-            width: 90%;
-            height: 70%;
-            background-color: #2a5e3a;
-            border-radius: 20px;
-            padding: 10px;
-            position: relative;
-        }
-        .card {
-            width: 70px;
-            height: 100px;
-            background-color: white;
-            margin: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: white;
-            border-radius: 20px;
-            padding: 20px;
-            width: 80%;
-            text-align: center;
-        }
-    </style>
+    <title>لعبة البلوت</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="game-container">
+        <!-- لوحة النتائج -->
+        <div class="score-board">
+            <div class="team-score">
+                <h3>الفريق 1</h3>
+                <span class="score" id="team1-score">0</span>
+            </div>
+            <div class="team-score">
+                <h3>الفريق 2</h3>
+                <span class="score" id="team2-score">0</span>
+            </div>
+        </div>
 
-    <div class="score-board">
-        <div>الفريق 1: <span id="team1-score">0</span></div>
-        <div>الفريق 2: <span id="team2-score">0</span></div>
-    </div>
+        <!-- طاولة اللعب -->
+        <div class="game-table">
+            <!-- منطقة اللاعب العلوي -->
+            <div class="player-area top">
+                <div class="player-name">اللاعب 2</div>
+                <div class="player-cards" id="top-player-cards"></div>
+            </div>
 
-    <div class="game-table" id="game-table">
-        <div id="player-top-hand"></div>
-        <div id="player-left-hand"></div>
-        <div id="player-right-hand"></div>
-        <div id="player-bottom-hand"></div>
-        <div id="game-status">جاهز للعب</div>
-    </div>
+            <!-- المناطق الجانبية -->
+            <div class="side-areas">
+                <div class="player-area left">
+                    <div class="player-name">اللاعب 3</div>
+                    <div class="player-cards" id="left-player-cards"></div>
+                </div>
+                
+                <!-- منطقة اللعب المركزية -->
+                <div class="play-area">
+                    <div class="played-cards" id="played-cards"></div>
+                    <div class="game-status" id="game-status">جاهز للعب</div>
+                </div>
 
-    <div class="modal" id="declaration-modal">
-        <div class="modal-content">
-            <h2>اختر نوع الإعلان</h2>
-            <button onclick="handleDeclaration('sun')">الصن</button>
-            <button onclick="handleDeclaration('hukm')">الحكم</button>
-            <button onclick="closeModal()">إغلاق</button>
+                <div class="player-area right">
+                    <div class="player-name">اللاعب 4</div>
+                    <div class="player-cards" id="right-player-cards"></div>
+                </div>
+            </div>
+
+            <!-- منطقة اللاعب السفلي -->
+            <div class="player-area bottom">
+                <div class="player-name">اللاعب 1</div>
+                <div class="player-cards" id="bottom-player-cards"></div>
+            </div>
+        </div>
+
+        <!-- نافذة الإعلان -->
+        <div class="modal" id="declaration-modal">
+            <div class="modal-content">
+                <h2>اختر نوع الإعلان</h2>
+                <div class="declaration-options">
+                    <div class="declaration-type">
+                        <h3>الصن</h3>
+                        <div class="suit-buttons">
+                            <button class="suit-btn hearts" data-suit="hearts">♥</button>
+                            <button class="suit-btn diamonds" data-suit="diamonds">♦</button>
+                            <button class="suit-btn clubs" data-suit="clubs">♣</button>
+                            <button class="suit-btn spades" data-suit="spades">♠</button>
+                        </div>
+                    </div>
+                    <div class="declaration-type">
+                        <h3>الحكم</h3>
+                        <div class="suit-buttons">
+                            <button class="suit-btn hearts" data-suit="hearts">♥</button>
+                            <button class="suit-btn diamonds" data-suit="diamonds">♦</button>
+                            <button class="suit-btn clubs" data-suit="clubs">♣</button>
+                            <button class="suit-btn spades" data-suit="spades">♠</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <script>
-        let gameScores = { team1: 0, team2: 0 };
-        let currentPlayer = 'bottom';
-        let trick = [];
-        let gameStatus = 'جاهز للعب';
-        
-        function updateScoreboard() {
-            document.getElementById('team1-score').innerText = gameScores.team1;
-            document.getElementById('team2-score').innerText = gameScores.team2;
-        }
-
-        function playCard(player, card) {
-            // منطق اللعب
-            console.log(`اللاعب ${player} لعب البطاقة ${card}`);
-            // تحديث الحالة
-            trick.push({ player, card });
-            // تحديث اللعبة هنا
-        }
-
-        function handleDeclaration(type) {
-            // معالجة الإعلان
-            console.log(`الإعلان: ${type}`);
-            closeModal();
-        }
-
-        function openModal() {
-            document.getElementById('declaration-modal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('declaration-modal').style.display = 'none';
-        }
-
-        // تحديث لوحة النتائج عند بدء اللعبة
-        updateScoreboard();
-    </script>
 </body>
 </html>
